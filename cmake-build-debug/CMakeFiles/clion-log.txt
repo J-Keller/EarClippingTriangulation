@@ -1,0 +1,5 @@
+/home/viking/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/181.4668.70/bin/cmake/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /home/viking/ClionProjects/Triangulation
+-- Found SFML 2.3.2 in /usr/include
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/viking/ClionProjects/Triangulation/cmake-build-debug
