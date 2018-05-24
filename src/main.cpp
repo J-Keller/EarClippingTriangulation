@@ -28,6 +28,9 @@ sf::RenderWindow window(sf::VideoMode(800, 600), "Triangulation");
 bool flag = true;
 bool mouseFlag = false;
 bool showTriangles = false;
+bool singleStep = false;
+bool singleStep2 = false;
+int currentStep = -1;
 
 int main() {
 
@@ -37,6 +40,10 @@ int main() {
     //vertices.emplace_back(sf::Vertex(sf::Vector2f(50, 50), sf::Color::Red));
 
     while(window.isOpen()) {
+
+        window.clear(sf::Color::Black);
+
+        window.draw(vertices.data(), vertices.size(), sf::LinesStrip);
 
         sf::Event event;
         while(window.pollEvent(event)) {
@@ -56,21 +63,44 @@ int main() {
                 }
                 mouseFlag = false;
             }
+            if(event.type == sf::Event::KeyReleased && singleStep) {
+                if(singleStep) {
+                    currentStep++;
+
+                    if(currentStep > triangles.size()) {
+                        currentStep = 0;
+                    }
+
+                }
+            }
+            if(event.type == sf::Event::KeyReleased && singleStep2) {
+                if(singleStep2) {
+                    currentStep++;
+
+                    if(currentStep > triangles.size()) {
+                        currentStep = 0;
+                    }
+
+                }
+            }
         }
 
         handleInput();
 
-        window.clear(sf::Color::Black);
-
-        window.draw(vertices.data(), vertices.size(), sf::LinesStrip);
+        if(singleStep) {
+            window.draw(triangles[currentStep].triangle, 4, sf::LinesStrip);
+        }
+        if(singleStep2) {
+            for(int i = 0; i <=currentStep; i++) {
+                window.draw(triangles[i].triangle, 4, sf::LinesStrip);
+            }
+        }
 
         if(showTriangles) {
-            window.setFramerateLimit(1);
             for(Triangle t : triangles) {
                 window.draw(t.triangle, 4, sf::LinesStrip);
                 window.display();
             }
-
         }
 
         window.display();
@@ -179,6 +209,18 @@ void handleInput() {
     }
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::T)) {
         showTriangles = triangulate();
+    }
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
+        if(!singleStep) {
+            triangulate();
+        }
+        singleStep = true;
+    }
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+        if(!singleStep2) {
+            triangulate();
+        }
+        singleStep2 = true;
     }
 
 }
